@@ -1,7 +1,7 @@
 (define (domain snake)
     (:requirements :strips :equality :typing
     )
-    (:tyoes TCASELLA TAGENT)
+    (:types TCASELLA TAGENT)
     (:predicates
         (EsParet ?casella - TCASELLA)
         (EstaBuida ?casella - TCASELLA)
@@ -9,7 +9,7 @@
         (EstaAgent ?agent - TAGENT ?casella - TCASELLA)
     )
 (:action Moure
-        :parameters (?agent - TAGENT ?deCasella ?aCasella)
+        :parameters (?agent - TAGENT ?deCasella ?aCasella - TCASELLA)
         :precondition (and
                             (EstaBuida ?aCasella)
                             (EstaAgent ?agent ?deCasella)

@@ -14,7 +14,7 @@
             (EsParet C0x5)
             (EsParet C0x6)
             (EsParet C0x7)
-            (EstaBuida C1x0)
+            (EsSortida A C1x0)
 			(EstaBuida C1x1)
             (EstaBuida C1x2)
             (EstaBuida C1x3)
@@ -37,7 +37,7 @@
             (EstaBuida C3x4)
             (EstaBuida C3x5)
             (EstaBuida C3x6)
-            (EstaBuida C3x7)
+            (EsSortida B C3x7)
             (EsParet C4x0)
 			(EsParet C4x1)
             (EsParet C4x2)
@@ -46,6 +46,8 @@
             (EsParet C4x5)
             (EsParet C4x6)
             (EsParet C4x7)
+            (not (HaSortit A))
+            (not (HaSortit B))
         ;=================================
 		; Veinatge de caselles
 		;=================================
@@ -122,8 +124,8 @@
     )    
     (:goal 
         (and  
-		    (EstaAgent A C1x0)
-            (EstaAgent B C3x7)
+		    (HaSortit A)
+            (HaSortit B)
 		)
     )
 )

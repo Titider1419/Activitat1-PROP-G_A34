@@ -30,7 +30,17 @@ public class Mapa extends MapaBase {
 
     @Override
     public boolean equals(Object o) {
-        //@TODO: implementar
+        if (this == o) return true;
+        else if (o instanceof Mapa other) {
+            Mapa otherMapa = (Mapa) o;
+            if(this.n == otherMapa.n && this.m == otherMapa.m) {
+                for (int i = 0; i < n; i++) {
+                    if (!Arrays.equals(this.grid[i], otherMapa.grid[i])) {
+                        return false;
+                    }
+                }
+            }
+        }
         return false;
     }
 

@@ -33,6 +33,7 @@ public class Mapa extends MapaBase {
         if (this == o) return true;
         else if (o instanceof Mapa other) {
             Mapa otherMapa = (Mapa) o;
+            if(!this.agents.equals(otherMapa.agents)) return false;
             if(this.n == otherMapa.n && this.m == otherMapa.m) {
                 for (int i = 0; i < n; i++) {
                     if (!Arrays.equals(this.grid[i], otherMapa.grid[i])) {
@@ -46,8 +47,12 @@ public class Mapa extends MapaBase {
 
     @Override
     public int hashCode() {
-        //@TODO: implementar
-        return 0;
+        int result = 1;
+        result = 31 * result + agents.hashCode();
+        for(int i = 0; i < n; i++) {
+            result = 31 * result + Arrays.hashCode(grid[i]);
+        }
+        return result;
     }
 
     /**

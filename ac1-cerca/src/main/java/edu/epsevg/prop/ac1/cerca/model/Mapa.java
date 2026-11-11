@@ -40,6 +40,7 @@ public class Mapa extends MapaBase {
                         return false;
                     }
                 }
+                return true;
             }
         }
         return false;

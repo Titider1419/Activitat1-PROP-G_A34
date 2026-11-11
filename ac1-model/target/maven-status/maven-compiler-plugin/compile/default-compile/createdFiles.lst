@@ -1,6 +1,14 @@
 edu\epsevg\prop\ac1\model\Posicio.class
 edu\epsevg\prop\ac1\resultat\ResultatCerca.class
+<<<<<<< HEAD
 edu\epsevg\prop\ac1\model\MapaBase.class
 edu\epsevg\prop\ac1\utils\CsvWriter.class
 edu\epsevg\prop\ac1\model\Moviment.class
 edu\epsevg\prop\ac1\model\Direccio.class
+=======
+edu\epsevg\prop\ac1\model\Direccio$1.class
+edu\epsevg\prop\ac1\model\Direccio.class
+edu\epsevg\prop\ac1\model\MapaBase.class
+edu\epsevg\prop\ac1\utils\CsvWriter.class
+edu\epsevg\prop\ac1\model\Moviment.class
+>>>>>>> 5d759a8ac5160437d6cf69f717d0f20f0ff35784

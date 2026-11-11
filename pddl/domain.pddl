@@ -12,24 +12,30 @@
     )
 (:action Moure
         :parameters (?agent - TAGENT ?deCasella ?aCasella - TCASELLA)
-        :precondition (and
-                            (or 
-                                (EstaBuida ?aCasella)
-                                (EsSortida ?agent ?aCasella)
-                            )
-                            (EstaAgent ?agent ?deCasella)
-                            (or
-                                (Veina ?aCasella ?deCasella)
-                                (Veina ?deCasella ?aCasella)
-                            )
-                            (not (EsParet ?aCasella))
-                    )
+        :precondition (and 
+            (EstaBuida ?aCasella)
+            (EstaAgent ?agent ?deCasella)
+            (or
+                (Veina ?aCasella ?deCasella)
+                (Veina ?deCasella ?aCasella)
+            )
+            (not (EsParet ?aCasella))
+        )
         :effect (and
             (EsParet ?deCasella)
-            (EstaAgent ?agent ?aCasella)
             (not (EstaAgent ?agent ?deCasella))
-            (when (EstaBuida ?aCasella) (not (EstaBuida ?aCasella)))
-            (when (EsSortida ?agent ?aCasella) (HaSortit ?agent))
+            (not (EstaBuida ?aCasella))
+
+            (when (not (EsSortida ?agent ?aCasella))
+                (EstaAgent ?agent ?aCasella)
+            )
+
+            (when (EsSortida ?agent ?aCasella) 
+                (and
+                    (HaSortit ?agent)
+                    (EsParet ?aCasella)
+                )
+            )
         )
     )
 )

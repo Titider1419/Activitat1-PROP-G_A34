@@ -1,0 +1,14 @@
+# Ignorar archivos compilados de Maven
+target/
+*.class
+
+# Ignorar archivos generados de resultados
+results.csv
+
+# Ignorar configuración de IDEs
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project

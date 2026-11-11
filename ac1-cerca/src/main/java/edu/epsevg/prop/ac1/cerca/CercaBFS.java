@@ -54,7 +54,7 @@ public class CercaBFS extends Cerca {
             else{
                 List<Moviment> accions = new ArrayList<>();
                 while(actual != null){
-                    accions.addFirst(actual.accio);
+                    accions.add(0, actual.accio);
                     actual = actual.pare;
                 }
                 rc.setSolucio(accions);

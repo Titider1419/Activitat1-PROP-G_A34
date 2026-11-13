@@ -51,7 +51,7 @@ public class Mapa extends MapaBase {
         int result = 1;
         result = 31 * result + agents.hashCode();
         for(int i = 0; i < n; i++) {
-            result = 31 * result + Arrays.hashCode(grid[i]);
+            result = 31 * result + Arrays.deepHashCode(grid);
         }
         return result;
     }

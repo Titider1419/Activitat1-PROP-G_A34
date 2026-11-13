@@ -1,2 +1,7 @@
 Algoritme;usaLNT;Mapa;Trobat;Valida;Longitud;NodesExplorats;NodesTallats;MemoriaPicOberts;MemoriaPicTancats;MemoriaPicTotal;TempsMs
-BFS;NO;mapA;YES;NO(moviment 1 [null]: Cannot invoke "edu.epsevg.prop.ac1.model.Moviment.getAgentId()" because "acc" is null);17;3043516;0;0;0;0;3265
+BFS;NO;mapA;YES;YES;12;539471;0;452539;0;452539;566
+BFS;YES;mapA;YES;YES;12;5052;5514;1235;6003;6955;34
+DFS;NO;mapA;YES;YES;16;191896;0;34;0;34;114
+DFS;YES;mapA;YES;YES;16;2170;1799;34;2192;2215;3
+IDS;NO;mapA;YES;YES;12;1348840;697814;31;0;31;467
+IDS;YES;mapA;YES;YES;12;20968;24067;31;5223;5237;32

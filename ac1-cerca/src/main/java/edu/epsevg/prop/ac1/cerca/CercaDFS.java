@@ -8,6 +8,7 @@ import java.util.*;
 
 public class CercaDFS extends Cerca {
     private static final int LIMIT_PER_DEFECTE = 50;
+    
 
     public CercaDFS(boolean usarLNT) { super(usarLNT); }
 

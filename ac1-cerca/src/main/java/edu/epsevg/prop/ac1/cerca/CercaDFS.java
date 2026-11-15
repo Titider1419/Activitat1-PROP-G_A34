@@ -70,7 +70,6 @@ public class CercaDFS extends Cerca {
                 oberts.push(fill);
             }
         }
-
 }
 
 //funció auxiliar per trobar nodes repetits en la mateixa rama pujant pels pares

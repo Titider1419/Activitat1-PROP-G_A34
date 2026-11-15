@@ -18,6 +18,7 @@ import edu.epsevg.prop.ac1.resultat.ResultatCerca;
 import edu.epsevg.prop.ac1.utils.CsvWriter;
 import edu.epsevg.prop.ac1.cerca.*;
 import edu.epsevg.prop.ac1.cerca.heuristica.HeuristicaAvancada;
+import edu.epsevg.prop.ac1.cerca.heuristica.HeuristicaBasica;
 
 
 public class Main {
@@ -55,6 +56,8 @@ public class Main {
         executarIRecopilarResultats(new CercaDFS(true), m, csv);
         executarIRecopilarResultats(new CercaIDS(false), m, csv);
         executarIRecopilarResultats(new CercaIDS(true), m, csv);
+        executarIRecopilarResultats(new CercaAStar(false, new HeuristicaBasica()), m, csv);
+        executarIRecopilarResultats(new CercaAStar(true, new HeuristicaBasica()), m, csv);
         
         // Feu les crides que us semblin oportunes, p.ex:
         //===================================================================

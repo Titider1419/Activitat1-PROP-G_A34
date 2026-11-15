@@ -20,8 +20,17 @@ public class HeuristicaAvancada implements Heuristica {
     
     @Override
     public int h(Mapa estat) {
-        //@TODO: implementar
-        return 0;
+        int suma = 0;
+        for(int i = 0; i < estat.getAgents().size(); ++i){
+            Posicio posAgent = estat.getAgents().get(i);
+            if(posAgent == null) continue;
+            Posicio posSortida = estat.getSortida(i);
+            int[][] dist = estat.distancesFrom(posAgent);
+            int distSortida = dist[posSortida.x][posSortida.y];
+            if(distSortida == -1) return -1;
+            else suma += distSortida;
+        }
+        return suma;
     }
     
     @Override

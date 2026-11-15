@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayDeque;
 import java.util.Arrays;
+import java.util.Deque;
 
 /**
  * Implementació concreta de {@link MapaBase}. Aquí és on cal decidir quan dos estats
@@ -66,7 +67,31 @@ public class Mapa extends MapaBase {
      */
     @Override
     public int[][] distancesFrom(Posicio src) {
-        //@TODO: implementar
-        return null;
+        int[][] dist = new int[getN()][getM()];
+        for(int[] fila:dist) Arrays.fill(fila, -1);
+        dist[src.x][src.y] = 0;
+        Deque<Posicio> oberts = new ArrayDeque<>();
+        oberts.add(src);
+        while(!oberts.isEmpty()){
+            Posicio actual = oberts.poll();
+            int dActual = dist[actual.x][actual.y];
+            for(Direccio d : Direccio.values()){
+                Posicio dest = actual.translate(d);
+                if (getCella(dest) != PARET && dist[dest.x][dest.y] == -1){
+                    boolean trobat = false;
+                    int i = 0;
+                    while(i < agents.size() && !trobat){
+                        if(agents.get(i) != null && dest.x == agents.get(i).x && dest.y == agents.get(i).y) trobat = true;
+                        else ++i;
+                    }
+                    if(!trobat){
+                        dist[dest.x][dest.y] = dActual+1;
+                        oberts.add(dest);
+                    }
+                }
+                
+            }
+        }
+        return dist;
     }
 }

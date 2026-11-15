@@ -58,6 +58,11 @@ public class CercaAStar extends Cerca {
                 Mapa seguentEstat = (Mapa) actual.estat.mou(m);
                 int nouCostG = actual.g + 1;
 
+                if(heur.h(seguentEstat) == -1){
+                    rc.incNodesTallats();
+                    continue;
+                }
+
                 if (usarLNT) {
                     // Solo descartamos si ya lo vimos con un coste menor o igual
                     if (tancats.containsKey(seguentEstat) && tancats.get(seguentEstat) <= nouCostG) {

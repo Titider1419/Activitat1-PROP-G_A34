@@ -40,7 +40,7 @@ public class Main {
      * Poseu-ho a {@code false} si voleu reexecutar tota la bateria completa des de zero
      * a {@code results.csv}.
      */
-    private static final boolean NOMES_PENDENTS = true;
+    private static final boolean NOMES_PENDENTS = false;
 
     /**
      * Directori on hi ha els fitxers {@code .map}. Per defecte és relatiu al directori
@@ -89,8 +89,8 @@ public class Main {
         List<Experiment> llista = new ArrayList<>();
 
         // 1) mapA: bateria completa amb i sense LNT (molt ràpida, < 1 s en total)
-        String[] algsTots = {"BFS", "DFS", "IDS", "ASTAR_BAS", "ASTAR_AV"};
-        String[] nomsTots = {"BFS", "DFS", "IDS", "A*(H.bas)", "A*(H.av)"};
+        String[] algsTots = {"BFS", "DFS", "IDS", "ASTAR_BAS", "ASTAR_AV", "IDASTAR_BAS", "IDASTAR_AV"};
+        String[] nomsTots = {"BFS", "DFS", "IDS", "A*(H.bas)", "A*(H.av)", "IDA*(H.bas)", "IDA*(H.av)"};
         for (int i = 0; i < algsTots.length; i++) {
             llista.add(new Experiment(algsTots[i], nomsTots[i], false, "mapA"));
             llista.add(new Experiment(algsTots[i], nomsTots[i], true, "mapA"));
@@ -121,6 +121,10 @@ public class Main {
                 llista.add(new Experiment("ASTAR_BAS", "A*(H.bas)", true, mapa));
                 llista.add(new Experiment("ASTAR_AV", "A*(H.av)", false, mapa));
                 llista.add(new Experiment("ASTAR_AV", "A*(H.av)", true, mapa));
+                llista.add(new Experiment("IDASTAR_BAS", "IDA*(H.bas)", false, mapa));
+                llista.add(new Experiment("IDASTAR_BAS", "IDA*(H.bas)", true, mapa));
+                llista.add(new Experiment("IDASTAR_AV", "IDA*(H.av)", false, mapa));
+                llista.add(new Experiment("IDASTAR_AV", "IDA*(H.av)", true, mapa));
             }
             // mapC
             llista.add(new Experiment("BFS", "BFS", true, "mapC"));
@@ -128,12 +132,20 @@ public class Main {
             llista.add(new Experiment("IDS", "IDS", true, "mapC"));
             llista.add(new Experiment("ASTAR_BAS", "A*(H.bas)", true, "mapC"));
             llista.add(new Experiment("ASTAR_AV", "A*(H.av)", true, "mapC"));
+            llista.add(new Experiment("IDASTAR_BAS", "IDA*(H.bas)", true, "mapC"));
+            llista.add(new Experiment("IDASTAR_AV", "IDA*(H.av)", true, "mapC"));
             // mapD
             llista.add(new Experiment("ASTAR_BAS", "A*(H.bas)", true, "mapD"));
             llista.add(new Experiment("ASTAR_AV", "A*(H.av)", true, "mapD"));
+            llista.add(new Experiment("IDASTAR_BAS", "IDA*(H.bas)", true, "mapD"));
+            llista.add(new Experiment("IDASTAR_AV", "IDA*(H.av)", true, "mapD"));
             // mapE i mapF
             llista.add(new Experiment("ASTAR_AV", "A*(H.av)", true, "mapE"));
+            llista.add(new Experiment("IDASTAR_AV", "IDA*(H.av)", false, "mapE"));
+            llista.add(new Experiment("IDASTAR_AV", "IDA*(H.av)", true, "mapE"));
             llista.add(new Experiment("ASTAR_AV", "A*(H.av)", true, "mapF"));
+            llista.add(new Experiment("IDASTAR_AV", "IDA*(H.av)", false, "mapF"));
+            llista.add(new Experiment("IDASTAR_AV", "IDA*(H.av)", true, "mapF"));
         }
 
         return llista;
@@ -146,6 +158,8 @@ public class Main {
             case "IDS" -> new CercaIDS(usaLNT);
             case "ASTAR_BAS" -> new CercaAStar(usaLNT, new HeuristicaBasica());
             case "ASTAR_AV" -> new CercaAStar(usaLNT, new HeuristicaAvancada());
+            case "IDASTAR_BAS" -> new CercaIDAStar(usaLNT, new HeuristicaBasica());
+            case "IDASTAR_AV" -> new CercaIDAStar(usaLNT, new HeuristicaAvancada());
             default -> throw new IllegalArgumentException("Algoritme desconegut: " + codiAlgoritme);
         };
     }

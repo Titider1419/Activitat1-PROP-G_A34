@@ -74,6 +74,13 @@ public class CercaAStar extends Cerca {
             for (Moviment m : actual.estat.getAccionsPossibles()) {
                 Mapa seguentEstat = (Mapa) actual.estat.mou(m);
                 int nouCostG = actual.g + 1;
+                
+                //descartem l'estat si alguna sortida ja es innaccessible
+                int hFill = heur.h(seguentEstat);
+                if (hFill >= Mapa.INF) {
+                    rc.incNodesTallats();
+                    continue;
+                }
 
                 if (usarLNT) {
                     //Només descartem si ja tenim aquest estat amb un cost menor o igual

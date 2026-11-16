@@ -23,8 +23,8 @@ public class CercaIDS extends Cerca {
     public void ferCerca(Mapa inicial, ResultatCerca rc) {
         boolean tallat = true;
         int i = 0;
-        
-        while (rc.getSolucio() == null && tallat) {
+        int limit = 50;
+        while (i <= 50 && rc.getSolucio() == null && tallat) {
             Mapa map = new Mapa(inicial);
             tallat = ferCercaDFS(map, rc, i);
             if (tallat) ++i;

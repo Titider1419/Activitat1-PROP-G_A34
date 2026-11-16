@@ -124,11 +124,43 @@ Els algoritmes estàndard no són capaços de donar una solució en auqests mape
 - IDS i $A^*$ (sense LNT): Esgoten el temps màxim de 120 s (Timeout) re-explorant permutacions repetides.
 - DFS: Està limitat a profunditat 50, per la qual cosa és estructuralment incapaç d'assolir solucions més llargues.
 
+### Pregunta `[10]`: Solucionar E i F
+
+Pot ser un enfocament diferent que podriem haver utilitzat és mirar de fusionar diferents algoritmes per agafar els seus ventatges i intentar d'eliminar els seus defectes. En canvi, nosaltres hem pensat de fer l'algoritme IDA*, però ho hem fet de forma iterativa, creiem que aquest podria ser el motiu pel qual no hem arribat a conseguir cap solució pels dos mapes. En teoria haviem pensat en aquesta solució ja que ens permet no consumir tanta memòria a canvi de fer que l'algoritme tardi més, i sense perdre la capacitat d'obtenir la solució optima. 
+
+### Pregunta `[11]`: No afecta ordre de moviments
+
+Sigui una solució vàlida $S$ formada pels camins individuals $P_1, P_2, \dots, P_k$ dels $k$ agents des de les seves posicions inicials fins a les seves sortides respectives.
+
 ### Pregunta `[12]`: Solució optima
 
-Si tenim en compte que en aquest exercici tenim on totes les accions tenen cost unitari c = 1 i els camins són finits, BFS, A* amb totes les dues heuristiques i IDS, només sense LNT, donen una solució optima. Sent DFS i IDS amb LNT els únics que no et proporcionen la solució optima. 
+Si tenim en compte que en aquest exercici tenim on totes les accions tenen cost unitari c = 1 i els camins són finits, BFS, A* amb totes les dues heuristiques i IDS donen una solució optima. Sent DFS l'únic que no et proporciona la solució optima.
+
+A*: Aquest algoritme gràcies a l'heuristica i els costos donà la solució optima.
+
+IDS i BFS: Només donen la solució optima perquè com tots els moviments tenen un cost unitari de c = 1, llavors la solució optima és la més propera a l'arrel, justament la que proporcionen aquests algoritmes. 
 
 ### Pregunta `[13]`: BFS vs IDS
 
-BFS té menys temps d'exevcusió però gasta més memòria en comparació amb IDS. Això s'ajusta amb la teoria ja que IDS serveix per aconseiguir el mateix resultat que BFS però amb un cost menor de memoria, però com funciona fent un DFS iterativament canviant el limit de profunditat, això provoca que hagi de visualtizar molts nodes, diversos revisant-los diverses maneres. 
+BFS té menys temps d'execusió però gasta més memòria en comparació amb IDS. Això s'ajusta amb la teoria ja que IDS serveix per aconseiguir el mateix resultat que BFS però amb un cost menor de memoria, però com funciona fent un DFS iterativament canviant el limit de profunditat, això provoca que hagi de visualtizar molts nodes, diversos revisant-los diverses maneres.
+
+Comparació de dades Mapa B1:
+
+BFS (amb LNT):
+    - Temps(Ms): 34066
+    - MemoriaPicTotal: 4937768
+IDS (amb LNT):
+    - Temps(Ms): 60492
+    - MemoriaPicTotal: 3671517
+
+Comparació de dades Mapa A:
+
+BFS (sense LNT):
+    - Temps(Ms): 576
+    - MemoriaPicTotal: 452539
+IDS (sense LNT):
+    - Temps(Ms): 486
+    - MemoriaPicTotal: 31
+
+    
 

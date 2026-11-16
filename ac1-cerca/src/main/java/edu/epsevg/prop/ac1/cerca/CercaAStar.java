@@ -9,28 +9,42 @@ import java.util.*;
 
 public class CercaAStar extends Cerca {
 
-    private Heuristica heur;
+    private final Heuristica heur;
+
+    //creem una clase per guardar h(n) i f(n) = g(n) + h(n)
+    //i així evitem que la PriorityQueue recalculi heur.h()
+    private static final class NodeAStar {
+        final Node node;
+        final int h;
+        final int f;
+
+        NodeAStar(Node node, int h) {
+            this.node = node;
+            this.h = h;
+            this.f = node.g + h;
+        }
+    }
 
     public CercaAStar(boolean usarLNT, Heuristica heur) {
         super(usarLNT);
         this.heur = heur;
     }
 
-
     @Override
     public void ferCerca(Mapa inicial, ResultatCerca rc) {
-        // PriorityQueue ordenada por f(n) = g(n) + h(n)
-        PriorityQueue<Node> oberts = new PriorityQueue<>((o1, o2) -> {
-            int f1 = o1.g + heur.h(o1.estat);
-            int f2 = o2.g + heur.h(o2.estat);
-            return Integer.compare(f1, f2);
+        //Ordenem la cola de prioritatper f(n) + petita
+        //Si hi ha empat, desampatem per h(n) + petita per prioritzar nodes propers al objectiu
+        PriorityQueue<NodeAStar> oberts = new PriorityQueue<>((o1, o2) -> {
+            int cmp = Integer.compare(o1.f, o2.f);
+            return (cmp != 0) ? cmp : Integer.compare(o1.h, o2.h);
         });
 
-        // Guardamos el mapa y el mejor coste 'g' con el que se ha alcanzado
+        //Guardem a LNT cada estat amb el millor g que hem aconseguit 
         Map<Mapa, Integer> tancats = usarLNT ? new HashMap<>() : null;
 
         Node arrel = new Node(inicial, null, null, 0, 0);
-        oberts.add(arrel);
+        //Calculem h incial un sol cop
+        oberts.add(new NodeAStar(arrel, heur.h(inicial)));
         if (usarLNT) {
             tancats.put(inicial, 0);
         }
@@ -38,9 +52,10 @@ public class CercaAStar extends Cerca {
         while (!oberts.isEmpty()) {
             rc.updateMemoria(oberts.size(), usarLNT ? tancats.size() : 0);
 
-            Node actual = oberts.poll(); // Extraemos el nodo con menor f(n)
+            NodeAStar actualAS = oberts.poll();
+            Node actual = actualAS.node;
 
-            // Si ya habíamos expandido este estado con un coste g estrictamente menor, lo ignoramos
+            //Si aquest estat entra diferents cops en oberts i ja el vam expandir amb un g + petit, el descartem directament
             if (usarLNT && tancats.containsKey(actual.estat) && tancats.get(actual.estat) < actual.g) {
                 rc.incNodesTallats();
                 continue;
@@ -48,6 +63,8 @@ public class CercaAStar extends Cerca {
 
             rc.incNodesExplorats();
             rc.actualitzaProfunditat(actual.depth);
+            //Registrem la heuritsica minima explorada 
+            rc.actualitzaHeuristica(actualAS.h);
 
             if (actual.estat.esFinalPartida()) {
                 rc.setSolucio(reconstruirCami(actual));
@@ -58,19 +75,15 @@ public class CercaAStar extends Cerca {
                 Mapa seguentEstat = (Mapa) actual.estat.mou(m);
                 int nouCostG = actual.g + 1;
 
-                if(heur.h(seguentEstat) == -1){
-                    rc.incNodesTallats();
-                    continue;
-                }
-
                 if (usarLNT) {
-                    // Solo descartamos si ya lo vimos con un coste menor o igual
+                    //Només descartem si ja tenim aquest estat amb un cost menor o igual
                     if (tancats.containsKey(seguentEstat) && tancats.get(seguentEstat) <= nouCostG) {
                         rc.incNodesTallats();
                         continue;
                     }
                     tancats.put(seguentEstat, nouCostG);
                 } else {
+                    //Sense LNT, evitem repetir estats dins de la mateixa rama
                     if (esCicleEnBranca(actual, seguentEstat)) {
                         rc.incNodesTallats();
                         continue;
@@ -78,40 +91,35 @@ public class CercaAStar extends Cerca {
                 }
 
                 Node fill = new Node(seguentEstat, actual, m, actual.depth + 1, nouCostG);
-                oberts.add(fill);
+                //Calculem h del següent un unic cop al insertar-ho
+                oberts.add(new NodeAStar(fill, heur.h(seguentEstat)));
             }
         }
     }
 
-    //funció auxiliar per trobar nodes repetits en la mateixa rama pujant pels pares
     private boolean esCicleEnBranca(Node nodoActual, Mapa mapaNuevo) {
         Node curr = nodoActual;
         while (curr != null) {
             if (curr.estat.equals(mapaNuevo)) {
-                return true; //trobat el node en el camí actual
+                return true;
             }
-            curr = curr.pare;  //pujem un nivell cap al pare
+            curr = curr.pare;
         }
-        return false; //vol dir que no hi ha cicle en aquesta rama 
+        return false;
     }
 
-    //per cosntruir el camí solució, començem pel node arrel i anem cap a dalt mitjançant el pare fins arribar a l'arrel
     private List<Moviment> reconstruirCami(Node meta) {
         LinkedList<Moviment> cami = new LinkedList<>();
         Node curr = meta;
         while (curr.pare != null) {
-            cami.addFirst(curr.accio); 
+            cami.addFirst(curr.accio);
             curr = curr.pare;
         }
         return cami;
     }
 
-
-    /**
-     * Torna el nom de la cerca.
-     * @return el nom de la cerca.
-     */
-    public String getNomCerca(){
-        return "A*("+heur.getNom()+")";
+    @Override
+    public String getNomCerca() {
+        return "A*(" + heur.getNom() + ")";
     }
 }

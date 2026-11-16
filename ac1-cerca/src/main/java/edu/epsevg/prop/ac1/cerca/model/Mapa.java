@@ -51,9 +51,7 @@ public class Mapa extends MapaBase {
     public int hashCode() {
         int result = 1;
         result = 31 * result + agents.hashCode();
-        for(int i = 0; i < n; i++) {
-            result = 31 * result + Arrays.deepHashCode(grid);
-        }
+        result = 31 * result + Arrays.deepHashCode(grid);
         return result;
     }
 
@@ -68,28 +66,30 @@ public class Mapa extends MapaBase {
     @Override
     public int[][] distancesFrom(Posicio src) {
         int[][] dist = new int[getN()][getM()];
-        for(int[] fila:dist) Arrays.fill(fila, -1);
+        for (int[] fila : dist) Arrays.fill(fila, INF);
         dist[src.x][src.y] = 0;
         Deque<Posicio> oberts = new ArrayDeque<>();
         oberts.add(src);
-        while(!oberts.isEmpty()){
+        while (!oberts.isEmpty()) {
             Posicio actual = oberts.poll();
             int dActual = dist[actual.x][actual.y];
-            for(Direccio d : Direccio.values()){
+            for (Direccio d : Direccio.values()) {
                 Posicio dest = actual.translate(d);
-                if (getCella(dest) != PARET && dist[dest.x][dest.y] == -1){
+                if (getCella(dest) != PARET && dist[dest.x][dest.y] == INF) { //nomes explorem si no es pared i encara no ha sigut visitada
                     boolean trobat = false;
                     int i = 0;
-                    while(i < agents.size() && !trobat){
-                        if(agents.get(i) != null && dest.x == agents.get(i).x && dest.y == agents.get(i).y) trobat = true;
-                        else ++i;
+                    while (i < agents.size() && !trobat) { //comprovem si hi ha un altre agent ocupant la casella destí
+                        if (agents.get(i) != null && dest.x == agents.get(i).x && dest.y == agents.get(i).y) {
+                            trobat = true;
+                        } else {
+                            ++i;
+                        }
                     }
-                    if(!trobat){
-                        dist[dest.x][dest.y] = dActual+1;
+                    if (!trobat) {
+                        dist[dest.x][dest.y] = dActual + 1;
                         oberts.add(dest);
                     }
                 }
-                
             }
         }
         return dist;

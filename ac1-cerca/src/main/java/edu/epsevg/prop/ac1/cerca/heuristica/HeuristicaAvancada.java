@@ -21,14 +21,14 @@ public class HeuristicaAvancada implements Heuristica {
     @Override
     public int h(Mapa estat) {
         int suma = 0;
-        for(int i = 0; i < estat.getAgents().size(); ++i){
-            Posicio posAgent = estat.getAgents().get(i);
-            if(posAgent == null) continue;
+        for (int i = 0; i < estat.getAgents().size(); ++i) {
+            Posicio posAgent = estat.getAgents().get(i); 
+            if (posAgent == null) continue; //si l'agent ja ha arribat a la seva sortida, el cost es 0
             Posicio posSortida = estat.getSortida(i);
-            int[][] dist = estat.distancesFrom(posAgent);
+            int[][] dist = estat.distancesFrom(posAgent); //calculem la distancia real per BFS evitant parets, els rastres i altres agents
             int distSortida = dist[posSortida.x][posSortida.y];
-            if(distSortida == -1) return -1;
-            else suma += distSortida;
+            if (distSortida >= Mapa.INF) return Mapa.INF;
+            suma += distSortida;
         }
         return suma;
     }

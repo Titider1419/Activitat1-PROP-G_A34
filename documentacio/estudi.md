@@ -75,3 +75,19 @@ Aquesta taula unifica els resultats de totes les execucions (`results.csv` i `re
 
 
 
+### Pregunta `[9]`: Problemes mapes E i F
+
+Els algoritmes estàndard no són capaços de donar una solució en auqests mapes, perquè superen els límits de 120 segons d'execució i els 2GB de RAM de la JVM.
+
+- BFS i $A^*$ (amb LNT): Esgoten els 2 GB de memòria (OutOfMemoryError) en emmagatzemar més de 3-5 times x 10^6 objectes Mapa a la LNO/LNT.
+- IDS i $A^*$ (sense LNT): Esgoten el temps màxim de 120 s (Timeout) re-explorant permutacions repetides.
+- DFS: Està limitat a profunditat 50, per la qual cosa és estructuralment incapaç d'assolir solucions més llargues.
+
+### Pregunta `[12]`: Solució optima
+
+Si tenim en compte que en aquest exercici tenim on totes les accions tenen cost unitari c = 1 i els camins són finits, BFS, A* amb totes les dues heuristiques i IDS, només sense LNT, donen una solució optima. Sent DFS i IDS amb LNT els únics que no et proporcionen la solució optima. 
+
+### Pregunta `[13]`: BFS vs IDS
+
+BFS té menys temps d'exevcusió però gasta més memòria en comparació amb IDS. Això s'ajusta amb la teoria ja que IDS serveix per aconseiguir el mateix resultat que BFS però amb un cost menor de memoria, però com funciona fent un DFS iterativament canviant el limit de profunditat, això provoca que hagi de visualtizar molts nodes, diversos revisant-los diverses maneres. 
+

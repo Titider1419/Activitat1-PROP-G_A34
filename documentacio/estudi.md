@@ -73,6 +73,47 @@ Aquesta taula unifica els resultats de totes les execucions (`results.csv` i `re
 | **mapE** | A*(H.av) | YES | NO (OOM) | - | - | 87.895 | 76.148 | 370.998 | 458.892 | 829.890 | 112.249 |
 | **mapF** | A*(H.av) | YES | NO (TIMEOUT) | - | - | - | - | - | - | - | 120.000 |
 
+---
+
+
+### Pregunta `[2]`: Té sentit buscar cicles en l'arbre de cerca pujant per la branca actual (`usarLNT=false`)?
+
+
+**No té cap sentit en el nostre problema Multi-Snake**, ja que cada cop que un agent es mou, la casella que abandona es converteix en una paret (`#`). Cada pas cap a baix en l'arbre de cerca té més parets que tots els anteriors, per tant, mai podrem tornar a ell seguint aquesta mateixa rama. El que vol dir que l'espai d'estats es **acíclic**. A més, recórrer els nodes pare cap amunt afegeix un cost inútil de $O(d)$ a cada generació de node.
+
+
+Si observem la columna `Nodes Tallats`de la taula anterior en les execucions amb `usarLNT = NO`de **BFS** , **DFS** i **A\*** dels mapes A, B1 i B2, el valor és sempre **`0`**
+*En el cas IDS amb usarLNT = NO, els `697.814` nodes tallats corresponenen a la poda pel límit de profunditat de cada iteració*
+
+
+### Pregunta `[3]`: Calculeu el factor d’embrancament mitjà (real) del mapa A per BFS usant LNT i sense fer-la servir. Justifiqueu els avantatges d’usar la LNT respecte a no fer-la servir.
+
+
+Al `mapA`, la solució òptima la trobem a profunditat $d = 12$. El factor d'embrancament efectiu $b^*$ es calcula resolent l'equació que relaciona el nombre total de nodes explorats $N$ amb la profunditat $d$:
+
+
+$$N = \sum_{i=0}^{d} (b^*)^i = \frac{(b^*)^{d+1} - 1}{b^* - 1}$$
+
+
+* **BFS sense LNT (`usaLNT = NO`):** $N = 539.471$ nodes explorats a profunditat $d = 12$.
+  * Resolent el polinomi: **$b^* = 2,90$** (aproximació $539.471^{1/12} = 3,00$).
+* **BFS amb LNT (`usaLNT = YES`):** $N = 5.052$ nodes explorats a profunditat $d = 12$.
+  * Resolent el polinomi: **$b^* = 1,91$** (aproximació $5.052^{1/12} = 2,04$).
+
+
+**Avantatges de fer sevir la LNT respecte a no fer-la servir:** Malgrat que dins d'una mateixa branca no hi ha cicles, si que existeixen branques diferents que arriben al mateix estat (per exemple, intercalar els moviments de l'agent `A` i de l'agent `B` en ordres diferents dona exactament les mateixes posicions i el mateix rastre).
+Sense LNT, BFS torna a expandir el mateix estat moltes vegades, usar la LNT talla això i ens dona tres avantatges:
+1. **Reducció molt clara dels nodes explorats:** passem de `539.471` a `5.052`.
+2. **Menys temps d'execució:** passem de `627 ms` a `49 ms`.
+3. **Estalvi global de memòria en graelles obertes:** encara que la LNT ocupa espai, evita l'explosió de la cua d'oberts reduint el pic total de memòria de `452.539` a `6.955` estats.
+
+
+### Pregunta `[4]`: Expliqueu les diferències de resultats entre el mapa B1 i B2.
+
+
+Els dos mapes tenen exactament les mateixes dimensions ($7 \times 10$, interior $5 \times 8$), cap paret interior, les mateixes sortides (`a` a `(4,0)` i `b` a `(5,9)`) i la mateixa posició inicial per a l'agent `B` (`(2,2)`). L'única diferència és la posició inicial de l'agent `A`:
+* A **`mapB1`**, `A` comença a `(3,6)` (per sota de `B`).
+* A **`mapB2`**, `A` comença dues files més amunt, a `(1,6)` (per sobre de `B`).
 
 
 ### Pregunta `[9]`: Problemes mapes E i F
